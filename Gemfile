@@ -65,4 +65,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
-gem 'rails-controller-testing', group: [ :test ]
+group :test do
+  gem 'rspec-rails'
+  gem 'rails-controller-testing'
+end
