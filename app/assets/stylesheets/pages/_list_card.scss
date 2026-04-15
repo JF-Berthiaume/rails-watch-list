@@ -1,0 +1,34 @@
+/* app/assets/stylesheets/components/_list_card.scss */
+
+.list-card {
+  height: 250px;
+  border-radius: 15px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* L'effet de soulèvement quand on passe la souris */
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.3) !important;
+  }
+
+  .list-card-content {
+    width: 100%;
+
+    h3 {
+      font-family: 'Georgia', serif;
+      text-shadow: 1px 2px 4px rgba(0,0,0,0.9);
+      letter-spacing: 1px;
+    }
+
+    p {
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+      font-family: 'Helvetica', sans-serif;
+      margin-top: 5px;
+    }
+  }
+}

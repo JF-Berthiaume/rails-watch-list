@@ -1,33 +1,68 @@
+<%# 1. La bannière "Classic Cinema" %>
+<div class="cinema-banner" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('<%= @list.movies.any? ? @list.movies.first.poster_url : "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" %>');">
+
+  <%# Bouton Retour discret en haut %>
+  <%= link_to lists_path, class: "cinema-back-btn" do %>
+    <i class="fa-solid fa-chevron-left"></i> Mes listes
+  <% end %>
+
+  <div class="cinema-banner-content">
+    <h1 class="cinema-title"><%= @list.name %></h1>
+    <div class="cinema-divider"></div>
+    <p class="cinema-subtitle"><%= @list.movies.count %> films</p>
+  </div>
+</div>
+
+<%# 2. Le contenu principal %>
 <div class="container py-5">
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <h1><%= @list.name %></h1>
-    <div>
-      <%= link_to "Ajouter un film", new_list_bookmark_path(@list), class: "btn btn-success" %>
-      <%= link_to "Retour", lists_path, class: "btn btn-outline-secondary ms-2" %>
-    </div>
+  <%# Le bouton Ajouter aligné à droite juste sous la bannière %>
+  <div class="d-flex justify-content-end mb-4">
+    <%= link_to "Ajouter un film", "#add-movie-section", class: "btn btn-success px-4 shadow-sm" %>
   </div>
 
   <div class="row">
-    <% if @list.movies.any? %>
+    <% if @list.bookmarks.any? %>
       <% @list.bookmarks.each do |bookmark| %>
         <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow-sm border-0 movie-card">
             <img src="<%= bookmark.movie.poster_url %>" class="card-img-top" alt="<%= bookmark.movie.title %>" style="height: 400px; object-fit: cover;">
             <div class="card-body">
-              <h5 class="card-title"><%= bookmark.movie.title %> <span class="text-muted small">• <%= bookmark.movie.rating %> ★</span></h5>
-              <p class="card-text text-secondary"><%= bookmark.movie.overview %></p>
-              <p class="card-text italic"><i class="fa-solid fa-quote-left me-2"></i><%= bookmark.comment %></p>
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="card-title mb-0 fw-bold"><%= bookmark.movie.title %></h5>
+                <span class="badge bg-light text-dark border"><%= bookmark.movie.rating %> ★</span>
+              </div>
+              <p class="card-text text-secondary small"><%= bookmark.movie.overview %></p>
+              <div class="bookmark-comment p-2 rounded bg-light mt-3">
+                <p class="mb-0 small italic"><i class="fa-solid fa-quote-left text-muted me-2"></i><%= bookmark.comment %></p>
+              </div>
             </div>
-            <div class="card-footer bg-white border-top-0">
-              <%= link_to "Supprimer", bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "text-danger text-decoration-none" %>
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-3">
+              <%= link_to bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Retirer #{bookmark.movie.title} ?" }, class: "text-danger text-decoration-none small fw-bold" do %>
+                <i class="fa-solid fa-trash-can me-1"></i> Supprimer
+              <% end %>
             </div>
           </div>
         </div>
       <% end %>
     <% else %>
-      <div class="col-12 text-center py-5">
-        <p class="text-muted">Aucun film dans cette liste pour le moment.</p>
+      <div class="col-12 text-center py-5 border rounded bg-light">
+        <p class="text-muted mb-0">Votre liste est vide. Commencez par ajouter des chefs-d'œuvre !</p>
       </div>
     <% end %>
+  </div>
+
+  <%# 3. Le formulaire en bas de page %>
+  <hr class="my-5" id="add-movie-section">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow border-0 p-4">
+        <h3 class="text-center mb-4" style="font-family: 'Georgia', serif;">Enrichir ma liste</h3>
+        <%= simple_form_for [@list, @bookmark] do |f| %>
+          <%= f.association :movie, collection: Movie.order(:title), prompt: "Sélectionner un film", input_html: { class: 'form-select-lg' } %>
+          <%= f.input :comment, placeholder: "Pourquoi ce film est-il un incontournable ?", label: "Votre critique" %>
+          <%= f.submit "Ajouter à la liste", class: "btn btn-success w-100 btn-lg shadow-sm mt-3" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
