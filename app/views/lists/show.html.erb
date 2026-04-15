@@ -1,0 +1,33 @@
+<div class="container py-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1><%= @list.name %></h1>
+    <div>
+      <%= link_to "Ajouter un film", new_list_bookmark_path(@list), class: "btn btn-success" %>
+      <%= link_to "Retour", lists_path, class: "btn btn-outline-secondary ms-2" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <% if @list.movies.any? %>
+      <% @list.bookmarks.each do |bookmark| %>
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <img src="<%= bookmark.movie.poster_url %>" class="card-img-top" alt="<%= bookmark.movie.title %>" style="height: 400px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title"><%= bookmark.movie.title %> <span class="text-muted small">• <%= bookmark.movie.rating %> ★</span></h5>
+              <p class="card-text text-secondary"><%= bookmark.movie.overview %></p>
+              <p class="card-text italic"><i class="fa-solid fa-quote-left me-2"></i><%= bookmark.comment %></p>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+              <%= link_to "Supprimer", bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ?" }, class: "text-danger text-decoration-none" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">Aucun film dans cette liste pour le moment.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<%# app/views/bookmarks/new.html.erb %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+      <h1 class="mb-4">Ajouter un film à la liste <%= @list.name %></h1>
+
+      <%= simple_form_for [@list, @bookmark] do |f| %>
+        <%# L'association utilise les films de ta seed %>
+        <%= f.association :movie, collection: Movie.order(:title), prompt: "Choisissez un film", label: "Film" %>
+        <%= f.input :comment, placeholder: "Pourquoi ce film ?", label: "Ton commentaire (min. 6 caractères)" %>
+
+        <%= f.button :submit, "Ajouter le film", class: "btn btn-primary w-100" %>
+        <%= link_to "Annuler", list_path(@list), class: "btn btn-outline-secondary w-100 mt-2" %>
+      <% end %>
+    </div>
+  </div>
+</div>

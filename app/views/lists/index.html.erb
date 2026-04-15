@@ -1,0 +1,18 @@
+<div class="container py-5">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1>Mes Listes</h1>
+    <%= link_to "Créer une liste", new_list_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="row">
+    <% @lists.each do |list| %>
+      <div class="col-12 col-sm-6 col-md-4 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to list.name, list_path(list) %></h5>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

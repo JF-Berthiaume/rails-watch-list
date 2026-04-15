@@ -1,0 +1,14 @@
+<%# app/views/lists/new.html.erb %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+      <h1 class="mb-4">Créer une nouvelle liste</h1>
+
+      <%= simple_form_for(@list) do |f| %>
+        <%= f.input :name, placeholder: "ex: Films d'horreur", label: "Nom de la liste" %>
+        <%= f.button :submit, "Enregistrer la liste", class: "btn btn-primary w-100" %>
+        <%= link_to "Annuler", lists_path, class: "btn btn-outline-secondary w-100 mt-2" %>
+      <% end %>
+    </div>
+  </div>
+</div>
