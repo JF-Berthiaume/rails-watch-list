@@ -1,0 +1,13 @@
+<%
+  background_url ||= "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
+  subtitle ||= nil
+%>
+<div class="cinema-banner" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('<%= background_url %>');">
+  <div class="cinema-banner-content">
+    <h1 class="cinema-title"><%= title %></h1>
+    <div class="cinema-divider"></div>
+    <% if subtitle.present? %>
+      <p class="cinema-subtitle"><%= subtitle %></p>
+    <% end %>
+  </div>
+</div>

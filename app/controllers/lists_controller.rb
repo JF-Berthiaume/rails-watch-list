@@ -1,11 +1,11 @@
 class ListsController < ApplicationController
   def index
-    @lists = List.all
+    @lists = List.includes(:movies).all
   end
 
   def show
     @list = List.find(params[:id])
-    @bookmarks = @list.bookmarks
+    @bookmarks = @list.bookmarks.includes(:movie)
     @bookmark = Bookmark.new
   end
 
@@ -20,6 +20,25 @@ class ListsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def edit
+    @list = List.find(params[:id])
+  end
+
+  def update
+    @list = List.find(params[:id])
+    if @list.update(list_params)
+      redirect_to list_path(@list)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @list = List.find(params[:id])
+    @list.destroy
+    redirect_to lists_path, status: :see_other
   end
 
   private

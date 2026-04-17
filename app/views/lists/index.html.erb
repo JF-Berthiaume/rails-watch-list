@@ -1,24 +1,56 @@
+<%= render "shared/banner",
+      title: "Mes Collections",
+      subtitle: "#{@lists.size} collection#{'s' if @lists.size != 1} de films" %>
+
 <div class="container py-5">
-  <div class="d-flex align-items-center justify-content-between mb-5">
-    <h1 class="fw-bold" style="font-family: 'Georgia', serif;">Mes Collections</h1>
+  <div class="d-flex justify-content-end mb-4">
     <%= link_to new_list_path, class: "btn btn-success shadow-sm" do %>
-      <i class="fa-solid fa-plus"></i> Créer une liste
+      <i class="fa-solid fa-plus me-1"></i> Créer une liste
     <% end %>
   </div>
 
-  <div class="row">
-    <% @lists.each do |list| %>
-      <div class="col-12 col-sm-6 col-md-4 mb-4">
-        <%# Le lien englobe toute la carte pour un clic plus facile %>
-        <%= link_to list_path(list), class: "text-decoration-none" do %>
-          <div class="list-card shadow-sm" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url('<%= list.movies.any? ? list.movies.first.poster_url : "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" %>');">
+  <% if @lists.any? %>
+    <div class="row g-4">
+      <% @lists.each do |list| %>
+        <% first_movie = list.movies.first %>
+        <% background = first_movie&.poster_url || "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" %>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="list-card shadow-sm" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= background %>');">
+            <%= link_to list_path(list), class: "list-card-link", aria: { label: list.name } do %>
+              <span class="visually-hidden"><%= list.name %></span>
+            <% end %>
+
+            <div class="list-card-actions">
+              <%= link_to edit_list_path(list), class: "list-card-action", title: "Renommer" do %>
+                <i class="fa-solid fa-pen"></i>
+              <% end %>
+              <%= link_to list_path(list),
+                    data: { turbo_method: :delete, turbo_confirm: "Supprimer la liste '#{list.name}' ?" },
+                    class: "list-card-action list-card-action-danger",
+                    title: "Supprimer" do %>
+                <i class="fa-solid fa-trash-can"></i>
+              <% end %>
+            </div>
+
             <div class="list-card-content">
-              <h3 class="text-white m-0"><%= list.name %></h3>
-              <p class="text-warning m-0 small"><%= list.movies.count %> films</p>
+              <h3 class="list-card-title"><%= list.name %></h3>
+              <p class="list-card-meta">
+                <i class="fa-solid fa-film me-1"></i>
+                <%= list.movies.count %> film<%= "s" if list.movies.count != 1 %>
+              </p>
             </div>
           </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="lists-empty text-center py-5">
+      <i class="fa-solid fa-film fa-3x text-muted mb-3"></i>
+      <h4 class="text-muted">Aucune collection pour le moment</h4>
+      <p class="text-muted">Créez votre première liste pour commencer à bookmarker vos films préférés.</p>
+      <%= link_to new_list_path, class: "btn btn-success mt-2" do %>
+        <i class="fa-solid fa-plus me-1"></i> Créer ma première liste
+      <% end %>
+    </div>
+  <% end %>
 </div>

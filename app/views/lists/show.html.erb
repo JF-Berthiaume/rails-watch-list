@@ -1,45 +1,62 @@
-<%# 1. La bannière "Classic Cinema" %>
-<div class="cinema-banner" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('<%= @list.movies.any? ? @list.movies.first.poster_url : "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" %>');">
-
-  <%# Bouton Retour discret en haut %>
-  <%= link_to lists_path, class: "cinema-back-btn" do %>
-    <i class="fa-solid fa-chevron-left"></i> Mes listes
-  <% end %>
-
-  <div class="cinema-banner-content">
-    <h1 class="cinema-title"><%= @list.name %></h1>
-    <div class="cinema-divider"></div>
-    <p class="cinema-subtitle"><%= @list.movies.count %> films</p>
-  </div>
-</div>
+<%= render "shared/banner",
+      title: @list.name,
+      subtitle: "#{@list.movies.count} film#{'s' if @list.movies.count != 1}",
+      background_url: @list.movies.first&.poster_url %>
 
 <%# 2. Le contenu principal %>
 <div class="container py-5">
-  <%# Le bouton Ajouter aligné à droite juste sous la bannière %>
+  <%# Le bouton Ajouter ouvre maintenant une modale %>
   <div class="d-flex justify-content-end mb-4">
-    <%= link_to "Ajouter un film", "#add-movie-section", class: "btn btn-success px-4 shadow-sm" %>
+    <button type="button" class="btn btn-success px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+      <i class="fa-solid fa-plus me-1"></i> Ajouter un film
+    </button>
   </div>
 
   <div class="row">
     <% if @list.bookmarks.any? %>
       <% @list.bookmarks.each do |bookmark| %>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card h-100 shadow-sm border-0 movie-card">
-            <img src="<%= bookmark.movie.poster_url %>" class="card-img-top" alt="<%= bookmark.movie.title %>" style="height: 400px; object-fit: cover;">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-start mb-2">
-                <h5 class="card-title mb-0 fw-bold"><%= bookmark.movie.title %></h5>
-                <span class="badge bg-light text-dark border"><%= bookmark.movie.rating %> ★</span>
-              </div>
-              <p class="card-text text-secondary small"><%= bookmark.movie.overview %></p>
-              <div class="bookmark-comment p-2 rounded bg-light mt-3">
-                <p class="mb-0 small italic"><i class="fa-solid fa-quote-left text-muted me-2"></i><%= bookmark.comment %></p>
+        <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+          <div class="card shadow-sm border-0 movie-card w-100">
+            <div class="movie-card-poster">
+              <img src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>">
+              <span class="movie-card-rating"><%= bookmark.movie.rating %> ★</span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fw-bold mb-2"><%= bookmark.movie.title %></h5>
+              <p class="card-text text-secondary small movie-card-overview"><%= bookmark.movie.overview %></p>
+              <div class="bookmark-comment p-2 rounded bg-light mt-auto">
+                <p class="mb-0 small fst-italic"><i class="fa-solid fa-quote-left text-muted me-2"></i><%= bookmark.comment %></p>
               </div>
             </div>
-            <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-3">
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+              <button type="button" class="btn btn-link text-primary text-decoration-none small fw-bold p-0"
+                      data-bs-toggle="modal" data-bs-target="#editBookmarkModal-<%= bookmark.id %>">
+                <i class="fa-solid fa-pen me-1"></i> Modifier
+              </button>
               <%= link_to bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Retirer #{bookmark.movie.title} ?" }, class: "text-danger text-decoration-none small fw-bold" do %>
                 <i class="fa-solid fa-trash-can me-1"></i> Supprimer
               <% end %>
+            </div>
+          </div>
+        </div>
+
+        <%# Modale d'édition de la critique %>
+        <div class="modal fade" id="editBookmarkModal-<%= bookmark.id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" style="font-family: 'Georgia', serif;">Modifier la critique — <%= bookmark.movie.title %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+              </div>
+              <div class="modal-body">
+                <%= simple_form_for bookmark, html: { novalidate: true } do |f| %>
+                  <%= f.input :comment, as: :text, input_html: { rows: 4 }, label: "Votre critique", placeholder: "Pourquoi ce film est-il un incontournable ?" %>
+                  <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <%= f.submit "Enregistrer", class: "btn btn-primary" %>
+                  </div>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
@@ -51,16 +68,77 @@
     <% end %>
   </div>
 
-  <%# 3. Le formulaire en bas de page %>
-  <hr class="my-5" id="add-movie-section">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card shadow border-0 p-4">
-        <h3 class="text-center mb-4" style="font-family: 'Georgia', serif;">Enrichir ma liste</h3>
-        <%= simple_form_for [@list, @bookmark] do |f| %>
-          <%= f.association :movie, collection: Movie.order(:title), prompt: "Sélectionner un film", input_html: { class: 'form-select-lg' } %>
-          <%= f.input :comment, placeholder: "Pourquoi ce film est-il un incontournable ?", label: "Votre critique" %>
-          <%= f.submit "Ajouter à la liste", class: "btn btn-success w-100 btn-lg shadow-sm mt-3" %>
+</div>
+
+<%# 3. La modale d'ajout de film %>
+<%
+  preset_critiques = [
+    "Un chef-d'œuvre intemporel !",
+    "Incontournable du 7e art.",
+    "Une réalisation magistrale.",
+    "À voir absolument au moins une fois.",
+    "Le scénario est captivant du début à la fin.",
+    "Un film culte à partager."
+  ]
+  movies = Movie.order(:title)
+%>
+<div class="modal fade" id="addMovieModal" tabindex="-1" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMovieModalLabel" style="font-family: 'Georgia', serif;">Enrichir ma liste</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body" data-controller="bookmark-form">
+        <%= simple_form_for [@list, @bookmark], html: { novalidate: true } do |f| %>
+          <%= f.hidden_field :movie_id, data: { bookmark_form_target: "movieId" } %>
+          <%= f.hidden_field :comment, data: { bookmark_form_target: "comment" } %>
+
+          <label class="form-label fw-bold">Choisissez un film</label>
+          <div id="movieCarousel" class="carousel slide movie-carousel mb-4"
+               data-bs-ride="false" data-bs-interval="false"
+               data-bookmark-form-target="carousel">
+            <div class="carousel-inner rounded overflow-hidden bg-dark">
+              <% movies.each_with_index do |movie, i| %>
+                <div class="carousel-item <%= 'active' if i == 0 %>" data-movie-id="<%= movie.id %>">
+                  <img src="<%= movie.poster_url %>" class="d-block movie-carousel-img" alt="<%= movie.title %>">
+                  <div class="carousel-caption movie-carousel-caption">
+                    <h6 class="mb-0 fw-bold"><%= movie.title %></h6>
+                    <small class="text-warning"><%= movie.rating %> ★</small>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Précédent</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Suivant</span>
+            </button>
+          </div>
+
+          <label class="form-label fw-bold">Votre critique</label>
+          <select class="form-select" data-action="change->bookmark-form#selectPreset">
+            <option value="" selected disabled>Choisir une critique...</option>
+            <% preset_critiques.each do |critique| %>
+              <option value="<%= critique %>"><%= critique %></option>
+            <% end %>
+            <option value="__custom__">Écrire ma propre critique...</option>
+          </select>
+
+          <div class="mt-2" hidden data-bookmark-form-target="customField">
+            <textarea class="form-control" rows="3"
+                      placeholder="Votre critique personnalisée (min. 6 caractères)"
+                      data-bookmark-form-target="customInput"
+                      data-action="input->bookmark-form#updateCustom"></textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            <%= f.submit "Ajouter à la liste", class: "btn btn-success" %>
+          </div>
         <% end %>
       </div>
     </div>

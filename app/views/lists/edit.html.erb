@@ -1,0 +1,16 @@
+<%= render "shared/banner",
+      title: "Modifier la liste",
+      subtitle: @list.name,
+      background_url: @list.movies.first&.poster_url %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+      <%= simple_form_for(@list) do |f| %>
+        <%= f.input :name, placeholder: "ex: Films d'horreur", label: "Nom de la liste" %>
+        <%= f.button :submit, "Mettre à jour", class: "btn btn-success w-100" %>
+        <%= link_to "Annuler", list_path(@list), class: "btn btn-outline-secondary w-100 mt-2" %>
+      <% end %>
+    </div>
+  </div>
+</div>

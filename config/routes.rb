@@ -3,12 +3,12 @@ Rails.application.routes.draw do
   root to: "lists#index"
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
-  resources :lists, only: [:index, :show, :new, :create] do
+  resources :lists, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
     # On imbrique NEW et CREATE car on a besoin de l'ID de la liste pour créer le lien
     resources :bookmarks, only: [:new, :create]
   end
   # On laisse DESTROY à l'extérieur car l'ID du bookmark suffit pour le supprimer
-  resources :bookmarks, only: [:destroy]
+  resources :bookmarks, only: [:edit, :update, :destroy]
 
   get "up" => "rails/health#show", as: :rails_health_check
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)

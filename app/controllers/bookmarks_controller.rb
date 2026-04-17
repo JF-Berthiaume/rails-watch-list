@@ -19,6 +19,21 @@ class BookmarksController < ApplicationController
     end
   end
 
+  # GET /bookmarks/:id/edit
+  def edit
+    @bookmark = Bookmark.find(params[:id])
+  end
+
+  # PATCH /bookmarks/:id
+  def update
+    @bookmark = Bookmark.find(params[:id])
+    if @bookmark.update(bookmark_update_params)
+      redirect_to list_path(@bookmark.list)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /bookmarks/:id
   def destroy
     @bookmark = Bookmark.find(params[:id])
@@ -30,5 +45,9 @@ class BookmarksController < ApplicationController
 
   def bookmark_params
     params.require(:bookmark).permit(:comment, :movie_id)
+  end
+
+  def bookmark_update_params
+    params.require(:bookmark).permit(:comment)
   end
 end

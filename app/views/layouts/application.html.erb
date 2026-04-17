@@ -23,6 +23,24 @@
   </head>
 
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-lewagon">
+      <div class="container">
+        <%= link_to "Watch List", root_path, class: "navbar-brand fw-bold" %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <%= link_to "Mes listes", lists_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Nouvelle liste", new_list_path, class: "nav-link" %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <%= yield %>
   </body>
 </html>
