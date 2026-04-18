@@ -13,7 +13,11 @@
     <div class="row g-4">
       <% @lists.each do |list| %>
         <% first_movie = list.movies.first %>
-        <% background = first_movie&.poster_url || "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" %>
+        <% background = if list.photo.attached?
+                         cl_image_path(list.photo.key, height: 400, crop: :fill)
+                       else
+                         first_movie&.poster_url || "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
+                       end %>
         <div class="col-12 col-sm-6 col-lg-4">
           <div class="list-card shadow-sm" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= background %>');">
             <%= link_to list_path(list), class: "list-card-link", aria: { label: list.name } do %>

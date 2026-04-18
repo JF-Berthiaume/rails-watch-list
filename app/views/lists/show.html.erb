@@ -1,7 +1,8 @@
+<% banner_bg = @list.photo.attached? ? cl_image_path(@list.photo.key, height: 600, crop: :fill) : @list.movies.first&.poster_url %>
 <%= render "shared/banner",
       title: @list.name,
       subtitle: "#{@list.movies.count} film#{'s' if @list.movies.count != 1}",
-      background_url: @list.movies.first&.poster_url %>
+      background_url: banner_bg %>
 
 <%# 2. Le contenu principal %>
 <div class="container py-5">
