@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   # On laisse DESTROY à l'extérieur car l'ID du bookmark suffit pour le supprimer
   resources :bookmarks, only: [:edit, :update, :destroy]
 
+  post "/chatbot/message",     to: "chatbot#message"
+  post "/chatbot/add_to_list", to: "chatbot#add_to_list"
+
   get "up" => "rails/health#show", as: :rails_health_check
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

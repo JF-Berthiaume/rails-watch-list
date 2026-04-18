@@ -1,0 +1,40 @@
+<div class="chatbot"
+     data-controller="chatbot"
+     data-chatbot-message-url-value="<%= chatbot_message_path %>"
+     data-chatbot-add-url-value="<%= chatbot_add_to_list_path %>">
+  <button type="button"
+          class="chatbot-bubble"
+          data-chatbot-target="bubble"
+          data-action="click->chatbot#toggle"
+          aria-label="Ouvrir le chatbot">
+    <i class="fa-solid fa-film"></i>
+    <span class="chatbot-bubble-label">Ciné-conseil</span>
+  </button>
+
+  <div class="chatbot-panel" data-chatbot-target="panel" role="dialog" aria-label="Chatbot cinéphile">
+    <header class="chatbot-header">
+      <div>
+        <p class="chatbot-eyebrow">Watch List</p>
+        <h3 class="chatbot-title">Ciné-conseil</h3>
+      </div>
+      <button type="button" class="chatbot-close" data-action="click->chatbot#close" aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </header>
+
+    <div class="chatbot-messages" data-chatbot-target="messages"></div>
+
+    <form class="chatbot-form"
+          data-chatbot-target="form"
+          data-action="submit->chatbot#submit">
+      <input type="text"
+             class="chatbot-input"
+             data-chatbot-target="input"
+             placeholder="Pose ta question..."
+             autocomplete="off">
+      <button type="submit" class="chatbot-send" aria-label="Envoyer">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+  </div>
+</div>
