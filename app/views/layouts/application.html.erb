@@ -23,19 +23,23 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-lewagon">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-lewagon" data-controller="navbar">
       <div class="container">
         <%= link_to "Watch List", root_path, class: "navbar-brand fw-bold" %>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Ouvrir le menu">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav" data-navbar-target="collapse">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <%= link_to "Mes listes", lists_path, class: "nav-link" %>
+              <%= link_to "Mes listes", lists_path,
+                    class: "nav-link #{'active' if current_page?(lists_path)}",
+                    data: { action: "click->navbar#close" } %>
             </li>
             <li class="nav-item">
-              <%= link_to "Nouvelle liste", new_list_path, class: "nav-link" %>
+              <%= link_to "Nouvelle liste", new_list_path,
+                    class: "nav-link #{'active' if current_page?(new_list_path)}",
+                    data: { action: "click->navbar#close" } %>
             </li>
           </ul>
         </div>
