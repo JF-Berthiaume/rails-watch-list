@@ -1,12 +1,14 @@
 <%
   background_url ||= "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
   subtitle ||= nil
+  eyebrow ||= "Watch List"
 %>
-<div class="cinema-banner" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('<%= background_url %>');">
+<div class="cinema-banner" style="<%= "background-image: linear-gradient(rgba(15,13,11,0.65), rgba(15,13,11,0.88)), url('#{background_url}');".html_safe if background_url %>">
   <div class="cinema-banner-content">
+    <p class="cinema-eyebrow"><%= eyebrow %></p>
     <h1 class="cinema-title"><%= title %></h1>
-    <div class="cinema-divider"></div>
     <% if subtitle.present? %>
+      <div class="cinema-divider"><i class="fa-solid fa-film"></i></div>
       <p class="cinema-subtitle"><%= subtitle %></p>
     <% end %>
   </div>

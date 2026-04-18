@@ -1,28 +1,48 @@
-// This is where you override default Bootstrap variables
-// 1. Find all Bootstrap variables that you can override at the end of each component's documentation under the `Sass variables` anchor
-// e.g. here are the ones you can override for the navbar https://getbootstrap.com/docs/5.3/components/navbar/#sass-variables
-// 2. These variables are defined with default value (see https://robots.thoughtbot.com/sass-default)
-// 3. You can override them below!
+// Typography
+$font-family-sans-serif:  $body-font;
+$headings-font-family:    $headers-font;
+$headings-font-weight:    600;
+$headings-letter-spacing: -0.01em;
+$font-size-base:          1rem;
+$line-height-base:        1.55;
 
-// General style
-$font-family-sans-serif: $body-font;
-$headings-font-family:   $headers-font;
-$body-bg:                $light-gray;
-$font-size-base:         1rem;
+// Surfaces & text
+$body-bg:    $paper;
+$body-color: $ink;
 
-// Colors
-$body-color: $gray;
-$primary:    $blue;
-$success:    $green;
-$info:       $yellow;
-$danger:     $red;
-$warning:    $orange;
+// Semantic colors
+$primary:   $gold;
+$secondary: $ink-muted;
+$success:   $sage;
+$info:      $gold-bright;
+$warning:   $gold-bright;
+$danger:    $burgundy;
+$light:     $paper-raised;
+$dark:      $velvet;
 
-// Buttons & inputs' radius
-$border-radius-sm:            .0625rem;
-$border-radius:               .125rem;
-$border-radius-lg:            .25rem;
-$border-radius-xl:            .5rem;
-$border-radius-xxl:           1rem;
+// Radii — editorial, a little generous
+$border-radius-sm:  .1875rem;
+$border-radius:     .375rem;
+$border-radius-lg:  .625rem;
+$border-radius-xl:  1rem;
+$border-radius-xxl: 1.5rem;
 
-// Override other variables below!
+// Links
+$link-color:             $gold-deep;
+$link-hover-color:       $ink;
+$link-decoration:        none;
+$link-hover-decoration:  underline;
+
+// Buttons
+$btn-font-weight: 600;
+
+// Cards
+$card-border-color:  $hairline;
+$card-bg:            $paper-raised;
+$card-border-radius: $border-radius-lg;
+
+// Forms
+$input-bg:                 $paper-raised;
+$input-border-color:       $hairline;
+$input-focus-border-color: $gold;
+$input-focus-box-shadow:   0 0 0 .2rem rgba(201, 162, 75, .18);

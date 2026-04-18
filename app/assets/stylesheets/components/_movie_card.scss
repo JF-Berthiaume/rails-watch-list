@@ -1,19 +1,22 @@
 .movie-card {
-  border-radius: 12px;
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline) !important;
+  border-radius: $border-radius-lg;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
   flex-direction: column;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(26, 23, 21, 0.18) !important;
+    border-color: rgba(201, 162, 75, 0.5) !important;
   }
 
   .movie-card-poster {
     position: relative;
     aspect-ratio: 2 / 3;
-    background-color: #111;
+    background-color: var(--velvet);
     overflow: hidden;
 
     img {
@@ -21,19 +24,35 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.5s ease;
     }
+  }
+
+  &:hover .movie-card-poster img {
+    transform: scale(1.04);
   }
 
   .movie-card-rating {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: rgba(0, 0, 0, 0.75);
-    color: #ffc107;
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
+    background: rgba(15, 13, 11, 0.85);
+    color: var(--gold-bright);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(228, 192, 122, 0.3);
+    backdrop-filter: blur(4px);
+  }
+
+  .card-title {
+    font-family: $headers-font;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
   }
 
   .movie-card-overview {
@@ -41,6 +60,39 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    color: var(--ink-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
     margin-bottom: 0.75rem;
+  }
+
+  .bookmark-comment {
+    background: rgba(201, 162, 75, 0.08) !important;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 $border-radius $border-radius 0 !important;
+
+    p {
+      color: var(--ink);
+    }
+  }
+
+  .card-footer {
+    background: transparent !important;
+    border-top: 1px solid var(--hairline) !important;
+    padding-top: 0.75rem;
+
+    .btn-link {
+      color: var(--gold-deep) !important;
+      letter-spacing: 0.05em;
+
+      &:hover {
+        color: var(--ink) !important;
+      }
+    }
+
+    .text-danger {
+      color: var(--burgundy) !important;
+      letter-spacing: 0.05em;
+    }
   }
 }

@@ -1,10 +1,40 @@
-// Define variables for your color scheme
+// Editorial cinema palette
+$ink:          #1a1715;   // rich warm near-black text
+$ink-muted:    #6b625a;   // warm gray for meta/captions
+$paper:        #f7f3ec;   // warm ivory background
+$paper-raised: #fffaf1;   // cards above paper
+$hairline:     #e2d9ca;   // subtle borders on ivory
 
-// For example:
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
-$gray: #0E0000;
-$light-gray: #F4F4F4;
+$velvet:       #0f0d0b;   // warm near-black (navbar/banner fallbacks)
+$velvet-soft:  #1f1a14;
+
+$gold:         #c9a24b;   // primary accent — aged brass / marquee
+$gold-bright:  #e4c07a;
+$gold-deep:    #8f6f2e;
+
+$burgundy:     #9c3c3c;   // destructive — curtain red
+$sage:         #5a7a4c;   // success — muted olive
+
+// Backward compat shims for any legacy references
+$red:        $burgundy;
+$blue:       $gold;
+$yellow:     $gold-bright;
+$orange:     $gold;
+$green:      $sage;
+$gray:       $ink;
+$light-gray: $paper;
+
+:root {
+  --ink: #{$ink};
+  --ink-muted: #{$ink-muted};
+  --paper: #{$paper};
+  --paper-raised: #{$paper-raised};
+  --hairline: #{$hairline};
+  --velvet: #{$velvet};
+  --velvet-soft: #{$velvet-soft};
+  --gold: #{$gold};
+  --gold-bright: #{$gold-bright};
+  --gold-deep: #{$gold-deep};
+  --burgundy: #{$burgundy};
+  --sage: #{$sage};
+}

@@ -1,76 +1,110 @@
-/* app/assets/stylesheets/components/_banner.scss */
-
 .cinema-banner {
-  min-height: 180px;
-  padding: 2.5rem 1rem;
+  position: relative;
+  min-height: 220px;
+  padding: 3rem 1rem;
+  background-color: var(--velvet);
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.6;
+  }
 }
 
 .cinema-banner-content {
-  text-align: center;
+  position: relative;
   z-index: 2;
-  color: white;
-  width: 100%;
+  text-align: center;
+  color: #f6ebd4;
+  max-width: 860px;
+
+  .cinema-eyebrow {
+    font-family: $body-font;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 0.9rem;
+    opacity: 0.9;
+  }
 
   .cinema-title {
-    font-family: 'Georgia', serif;
-    font-size: 2.5rem;
+    font-family: $headers-font;
+    font-variation-settings: "opsz" 96, "SOFT" 50;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
     font-weight: 600;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
-    margin-bottom: 0.5rem;
-    letter-spacing: 1.5px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 0.75rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
   }
 
   .cinema-divider {
-    height: 1px;
-    width: 120px;
-    background: linear-gradient(to right, transparent, #d4af37, transparent);
-    margin: 0 auto 0.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1rem auto 0.75rem;
+
+    &::before,
+    &::after {
+      content: "";
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold) 50%, transparent);
+    }
+
+    i {
+      color: var(--gold);
+      font-size: 0.6rem;
+    }
   }
 
   .cinema-subtitle {
-    font-family: 'Georgia', serif;
+    font-family: $body-font;
     font-size: 1rem;
-    color: #d4af37;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: rgba(246, 235, 212, 0.75);
     margin: 0;
-    letter-spacing: 1px;
   }
 }
 
 @media (min-width: 768px) {
   .cinema-banner {
-    min-height: 220px;
-    padding: 3rem 1rem;
-  }
-
-  .cinema-banner-content .cinema-title {
-    font-size: 3rem;
-  }
-
-  .cinema-banner-content .cinema-subtitle {
-    font-size: 1.15rem;
+    min-height: 280px;
+    padding: 4rem 1rem;
   }
 }
 
 .cinema-back-btn {
   position: absolute;
-  top: 30px;
-  left: 40px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 3;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: $body-font;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-decoration: none;
-  font-family: 'Helvetica', sans-serif;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
+  transition: color 0.25s ease, transform 0.25s ease;
 
   &:hover {
-    color: white;
-    transform: translateX(-5px);
+    color: var(--gold-bright);
+    transform: translateX(-4px);
   }
 }
