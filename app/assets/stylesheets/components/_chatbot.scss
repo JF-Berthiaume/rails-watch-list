@@ -7,46 +7,158 @@
 }
 
 // --- Bubble ---
+@keyframes chatbotFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+@keyframes chatbotGlow {
+  0%, 100% {
+    box-shadow:
+      0 12px 28px rgba(15, 13, 11, 0.35),
+      0 0 0 0 rgba(228, 192, 122, 0.55),
+      0 0 18px 2px rgba(228, 192, 122, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 16px 36px rgba(15, 13, 11, 0.4),
+      0 0 0 14px rgba(228, 192, 122, 0),
+      0 0 28px 6px rgba(228, 192, 122, 0.35);
+  }
+}
+
+@keyframes chatbotShine {
+  0%   { transform: translateX(-120%) skewX(-20deg); }
+  60%  { transform: translateX(220%)  skewX(-20deg); }
+  100% { transform: translateX(220%)  skewX(-20deg); }
+}
+
 .chatbot-bubble {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.85rem 1.2rem;
-  background: var(--velvet);
+  padding: 0.95rem 1.35rem;
+  background:
+    linear-gradient(135deg, var(--velvet) 0%, var(--velvet-soft) 55%, var(--velvet) 100%);
   color: var(--gold-bright);
-  border: 1px solid rgba(228, 192, 122, 0.3);
+  border: 1px solid rgba(228, 192, 122, 0.45);
   border-radius: 999px;
   font-family: $body-font;
   font-weight: 600;
   font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  box-shadow: 0 12px 28px rgba(15, 13, 11, 0.35);
   cursor: pointer;
-  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease, letter-spacing 0.35s ease;
+
+  animation:
+    chatbotFloat 4s ease-in-out infinite,
+    chatbotGlow  2.8s ease-in-out infinite;
+
+  // Rotating gold ring behind the bubble
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+    border-radius: 999px;
+    padding: 2px;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      var(--gold) 80deg,
+      var(--gold-bright) 120deg,
+      var(--gold) 160deg,
+      transparent 240deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: chatbotRotateRing 5s linear infinite;
+    opacity: 0.75;
+  }
+
+  // Shine sweep across the bubble
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 240, 200, 0.08) 20%,
+      rgba(255, 240, 200, 0.55) 50%,
+      rgba(255, 240, 200, 0.08) 80%,
+      transparent 100%
+    );
+    transform: translateX(-120%) skewX(-20deg);
+    animation: chatbotShine 3.4s ease-in-out infinite;
+    animation-delay: 1.2s;
+    pointer-events: none;
+  }
 
   i {
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: var(--gold);
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease, color 0.25s ease;
+    filter: drop-shadow(0 0 6px rgba(228, 192, 122, 0.35));
   }
 
   &:hover {
-    background: var(--gold);
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 100%);
     color: var(--velvet);
-    transform: translateY(-3px);
-    box-shadow: 0 18px 36px rgba(15, 13, 11, 0.45);
+    border-color: var(--gold-bright);
+    transform: translateY(-4px) scale(1.04);
+    letter-spacing: 0.16em;
+    animation-play-state: paused;
+
+    box-shadow:
+      0 22px 48px rgba(15, 13, 11, 0.5),
+      0 0 0 8px rgba(228, 192, 122, 0.15),
+      0 0 48px 12px rgba(228, 192, 122, 0.45);
 
     i {
       color: var(--velvet);
-      transform: rotate(-10deg) scale(1.1);
+      transform: rotate(-15deg) scale(1.2);
+      filter: none;
     }
+
+    &::after {
+      animation-duration: 1.4s;
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(1.01);
   }
 
   &.is-hidden {
     opacity: 0;
     transform: translateY(20px) scale(0.9);
     pointer-events: none;
+    animation: none;
+  }
+}
+
+@keyframes chatbotRotateRing {
+  to { transform: rotate(360deg); }
+}
+
+// Reduced motion — respect user preference
+@media (prefers-reduced-motion: reduce) {
+  .chatbot-bubble,
+  .chatbot-bubble::before,
+  .chatbot-bubble::after {
+    animation: none !important;
   }
 }
 
